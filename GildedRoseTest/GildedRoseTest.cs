@@ -20,7 +20,7 @@ namespace GildedRoseTest
             {
                 app.UpdateQuality();
             }
-            var item = app.Items.Single(x => x.Name == "Sulfuras, Hand of Ragnaros");
+            var item = app.AvailableItems.Single(x => x.Name == "Sulfuras, Hand of Ragnaros");
             item.Quality.Should().Be(80);
             item.SellIn.Should().Be(0);
         }
@@ -39,7 +39,7 @@ namespace GildedRoseTest
             {
                 app.UpdateQuality();
             }
-            var item = app.Items.Single(x => x.Name == "+5 Dexterity Vest");
+            var item = app.AvailableItems.Single(x => x.Name == "+5 Dexterity Vest");
             item.Quality.Should().Be(expectedQuality);
             item.SellIn.Should().Be(expectedSellInDate);
         }
@@ -57,7 +57,7 @@ namespace GildedRoseTest
             {
                 app.UpdateQuality();
             }
-            var item = app.Items.Single(x => x.Name == "Aged Brie");
+            var item = app.AvailableItems.Single(x => x.Name == "Aged Brie");
             item.Quality.Should().Be(expectedQuality);
             item.SellIn.Should().Be(expectedSellInDate);
         }
@@ -75,7 +75,7 @@ namespace GildedRoseTest
             {
                 app.UpdateQuality();
             }
-            var item = app.Items.Single(x => x.Name == "Elixir of the Mongoose");
+            var item = app.AvailableItems.Single(x => x.Name == "Elixir of the Mongoose");
             item.Quality.Should().Be(expectedQuality);
             item.SellIn.Should().Be(expectedSellInDate);
         }
@@ -96,7 +96,7 @@ namespace GildedRoseTest
             {
                 app.UpdateQuality();
             }
-            var item = app.Items.Single(x => x.Name == "Backstage passes to a TAFKAL80ETC concert");
+            var item = app.AvailableItems.Single(x => x.Name == "Backstage passes to a TAFKAL80ETC concert");
             item.Quality.Should().Be(expectedQuality);
             item.SellIn.Should().Be(expectedSellInDate);
         }
@@ -113,7 +113,7 @@ namespace GildedRoseTest
             {
                 app.UpdateQuality();
             }
-            var item = app.Items.Single(x => x.Name == "Conjured Mana Cake");
+            var item = app.AvailableItems.Single(x => x.Name == "Conjured Mana Cake");
             item.Quality.Should().Be(expectedQuality);
             item.SellIn.Should().Be(expectedSellInDate);
         }
