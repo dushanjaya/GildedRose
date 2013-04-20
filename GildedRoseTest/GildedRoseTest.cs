@@ -8,19 +8,16 @@ namespace GildedRoseTest
     // Unit test has been written to test the behavior of each and every available item in the shop
     public class GildedRoseTest
     {
+        #region Public Methods
+
         [TestCase(3)]
         [TestCase(10)]
         [TestCase(20)]
         [TestCase(25)]
         [TestCase(51)]
-        public void QuilityAndSellInDateOfSulfurasNeverChange(int numberOfDaysAfter)
+        public void QualityAndSellInDateOfSulfurasNeverChange(int numberOfDaysAfter)
         {
-            var app = new GildedRoseApp();
-            for (var day = 1; day <= numberOfDaysAfter; day++)
-            {
-                app.UpdateQuality();
-            }
-            var item = app.AvailableItems.Single(x => x.Name == "Sulfuras, Hand of Ragnaros");
+            var item = GetItemAfterSpecificNumberOfDays(numberOfDaysAfter, "Sulfuras, Hand of Ragnaros");
             item.Quality.Should().Be(80);
             item.SellIn.Should().Be(0);
         }
@@ -32,14 +29,9 @@ namespace GildedRoseTest
         [TestCase(14, 2, -4)]
         [TestCase(20, 0, -10)]
         [TestCase(51, 0, -41)]
-        public void QuilityAndSellInDateOfDexterityVestAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
+        public void QualityAndSellInDateOfDexterityVestAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
         {
-            var app = new GildedRoseApp();
-            for (var day = 1; day <= numberOfDaysAfter; day++)
-            {
-                app.UpdateQuality();
-            }
-            var item = app.AvailableItems.Single(x => x.Name == "+5 Dexterity Vest");
+            var item = GetItemAfterSpecificNumberOfDays(numberOfDaysAfter, "+5 Dexterity Vest");
             item.Quality.Should().Be(expectedQuality);
             item.SellIn.Should().Be(expectedSellInDate);
         }
@@ -50,14 +42,9 @@ namespace GildedRoseTest
         [TestCase(20, 38, -18)]
         [TestCase(25, 48, -23)]
         [TestCase(61, 50, -59)]
-        public void QuilityAndSellInDateOfAgedBrieAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
+        public void QualityAndSellInDateOfAgedBrieAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
         {
-            var app = new GildedRoseApp();
-            for (var day = 1; day <= numberOfDaysAfter; day++)
-            {
-                app.UpdateQuality();
-            }
-            var item = app.AvailableItems.Single(x => x.Name == "Aged Brie");
+            var item = GetItemAfterSpecificNumberOfDays(numberOfDaysAfter, "Aged Brie");
             item.Quality.Should().Be(expectedQuality);
             item.SellIn.Should().Be(expectedSellInDate);
         }
@@ -68,14 +55,9 @@ namespace GildedRoseTest
         [TestCase(6, 0, -1)]
         [TestCase(10, 0, -5)]
         [TestCase(17, 0, -12)]
-        public void QuilityAndSellInDateOfElixirAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
+        public void QualityAndSellInDateOfElixirAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
         {
-            var app = new GildedRoseApp();
-            for (var day = 1; day <= numberOfDaysAfter; day++)
-            {
-                app.UpdateQuality();
-            }
-            var item = app.AvailableItems.Single(x => x.Name == "Elixir of the Mongoose");
+            var item = GetItemAfterSpecificNumberOfDays(numberOfDaysAfter, "Elixir of the Mongoose");
             item.Quality.Should().Be(expectedQuality);
             item.SellIn.Should().Be(expectedSellInDate);
         }
@@ -89,14 +71,9 @@ namespace GildedRoseTest
         [TestCase(15, 50, 0)]
         [TestCase(16, 0, -1)]
         [TestCase(20, 0, -5)]
-        public void QuilityAndSellInDateOfBackstagePassesAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
+        public void QualityAndSellInDateOfBackstagePassesAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
         {
-            var app = new GildedRoseApp();
-            for (var day = 1; day <= numberOfDaysAfter; day++)
-            {
-                app.UpdateQuality();
-            }
-            var item = app.AvailableItems.Single(x => x.Name == "Backstage passes to a TAFKAL80ETC concert");
+            var item = GetItemAfterSpecificNumberOfDays(numberOfDaysAfter, "Backstage passes to a TAFKAL80ETC concert");
             item.Quality.Should().Be(expectedQuality);
             item.SellIn.Should().Be(expectedSellInDate);
         }
@@ -106,16 +83,28 @@ namespace GildedRoseTest
         [TestCase(3, 0, 0)]
         [TestCase(5, 0, -2)]
         [TestCase(10, 0, -7)]
-        public void QuilityAndSellInDateOfConjuredAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
+        public void QualityAndSellInDateOfConjuredAfterSpecificNumberOfDays(int numberOfDaysAfter, int expectedQuality, int expectedSellInDate)
+        {
+            var item = GetItemAfterSpecificNumberOfDays(numberOfDaysAfter, "Conjured Mana Cake");
+            item.Quality.Should().Be(expectedQuality);
+            item.SellIn.Should().Be(expectedSellInDate);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private static Item GetItemAfterSpecificNumberOfDays(int numberOfDaysAfter, string itemName)
         {
             var app = new GildedRoseApp();
             for (var day = 1; day <= numberOfDaysAfter; day++)
             {
                 app.UpdateQuality();
             }
-            var item = app.AvailableItems.Single(x => x.Name == "Conjured Mana Cake");
-            item.Quality.Should().Be(expectedQuality);
-            item.SellIn.Should().Be(expectedSellInDate);
+            var item = app.AvailableItems.Single(x => x.Name == itemName);
+            return item;
         }
+
+        #endregion
     }
 }
