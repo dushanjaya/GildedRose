@@ -47,24 +47,8 @@ namespace GildedRose
         {
             foreach (var item in AvailableItems)
             {
-                switch (item.Name)
-                {
-                    case "Sulfuras, Hand of Ragnaros":
-                        continue;
-                    case "Conjured Mana Cake":
-                        UpdateConjuredQuality(item);
-                        break;
-                    case "Aged Brie":
-                        UpdateAgedBrieQuality(item);
-                        break;
-                    case "Backstage passes to a TAFKAL80ETC concert":
-                        UpdateBackstagePassesQuality(item);
-                        break;
-                    default:
-                        UpdateDefaultQuality(item);
-                        break;
-                }
-                item.SellIn = item.SellIn - 1;
+                item.UpdateQuality();
+                item.UpdateSellInDate();
             }
         }
 
@@ -77,69 +61,6 @@ namespace GildedRose
             new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 15, Quality = 20 },
             new Item { Name = "Conjured Mana Cake", SellIn = 3, Quality = 6 }
         };
-
-        #endregion
-
-        #region Private Region
-
-        #region Constants
-
-        private const int MaximumItemQuality = 50;
-        private const int MinimumItemQuality = 0;
-        private const int SellInDateEnd = 0;
-
-        #endregion
-
-        #region Methods
-
-        private static void UpdateDefaultQuality(Item item)
-        {
-            item.Quality = item.SellIn <= SellInDateEnd ? item.Quality - 2 : item.Quality - 1;
-            if (item.Quality >= MinimumItemQuality) return;
-            item.Quality = MinimumItemQuality;
-        }
-
-        private static void UpdateBackstagePassesQuality(Item item)
-        {
-            if (item.SellIn <= SellInDateEnd)
-            {
-                item.Quality = MinimumItemQuality;
-                return;
-            }
-
-            if (item.SellIn <= 5)
-            {
-                item.Quality = item.Quality + 3;
-            }
-            else if (item.SellIn <= 10)
-            {
-                item.Quality = item.Quality + 2;
-            }
-            else
-            {
-                item.Quality = item.Quality + 1;
-            }
-
-            if (item.Quality <= MaximumItemQuality) return;
-            item.Quality = MaximumItemQuality;
-
-        }
-
-        private static void UpdateAgedBrieQuality(Item item)
-        {
-            item.Quality = item.SellIn <= SellInDateEnd ? item.Quality + 2 : item.Quality + 1;
-            if (item.Quality <= MaximumItemQuality) return;
-            item.Quality = MaximumItemQuality;
-        }
-
-        private static void UpdateConjuredQuality(Item item)
-        {
-            item.Quality = item.SellIn <= SellInDateEnd ? item.Quality - 4 : item.Quality - 2;
-            if (item.Quality >= MinimumItemQuality) return;
-            item.Quality = MinimumItemQuality;
-        }
-
-        #endregion
 
         #endregion
     }
