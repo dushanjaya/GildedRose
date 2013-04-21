@@ -3,102 +3,104 @@ namespace GildedRose
 {
     public class Item
     {
+        #region Constants
+
+        protected const int MaximumItemQuality = 50;
+        protected const int MinimumItemQuality = 0;
+        protected const int SellInDateEnd = 0;
+
+        #endregion
+
+        #region Public Region
+
         public string Name { get; set; }
 
         public int SellIn { get; set; }
 
         public int Quality { get; set; }
 
-        public void UpdateQuality()
+        public virtual void UpdateQuality()
         {
-            switch (Name)
-            {
-                case "Sulfuras, Hand of Ragnaros":
-                    break;
-                case "Conjured Mana Cake":
-                    UpdateConjuredQuality(this);
-                    break;
-                case "Aged Brie":
-                    UpdateAgedBrieQuality(this);
-                    break;
-                case "Backstage passes to a TAFKAL80ETC concert":
-                    UpdateBackstagePassesQuality(this);
-                    break;
-                default:
-                    UpdateDefaultQuality(this);
-                    break;
-            }
+            Quality = SellIn <= SellInDateEnd ? Quality - 2 : Quality - 1;
+            if (Quality >= MinimumItemQuality) return;
+            Quality = MinimumItemQuality;
         }
 
-        public void UpdateSellInDate()
+        public virtual void UpdateSellInDate()
         {
-            if (Name != "Sulfuras, Hand of Ragnaros")
-            {
-                SellIn = SellIn - 1;
-            }
+            SellIn = SellIn - 1;
         }
-
-        #region Private Region
-
-        #region Constants
-
-        private const int MaximumItemQuality = 50;
-        private const int MinimumItemQuality = 0;
-        private const int SellInDateEnd = 0;
-
-        #endregion
-
-        #region Methods
-
-        private static void UpdateDefaultQuality(Item item)
-        {
-            item.Quality = item.SellIn <= SellInDateEnd ? item.Quality - 2 : item.Quality - 1;
-            if (item.Quality >= MinimumItemQuality) return;
-            item.Quality = MinimumItemQuality;
-        }
-
-        private static void UpdateBackstagePassesQuality(Item item)
-        {
-            if (item.SellIn <= SellInDateEnd)
-            {
-                item.Quality = MinimumItemQuality;
-                return;
-            }
-
-            if (item.SellIn <= 5)
-            {
-                item.Quality = item.Quality + 3;
-            }
-            else if (item.SellIn <= 10)
-            {
-                item.Quality = item.Quality + 2;
-            }
-            else
-            {
-                item.Quality = item.Quality + 1;
-            }
-
-            if (item.Quality <= MaximumItemQuality) return;
-            item.Quality = MaximumItemQuality;
-
-        }
-
-        private static void UpdateAgedBrieQuality(Item item)
-        {
-            item.Quality = item.SellIn <= SellInDateEnd ? item.Quality + 2 : item.Quality + 1;
-            if (item.Quality <= MaximumItemQuality) return;
-            item.Quality = MaximumItemQuality;
-        }
-
-        private static void UpdateConjuredQuality(Item item)
-        {
-            item.Quality = item.SellIn <= SellInDateEnd ? item.Quality - 4 : item.Quality - 2;
-            if (item.Quality >= MinimumItemQuality) return;
-            item.Quality = MinimumItemQuality;
-        }
-
-        #endregion
 
         #endregion
     }
+
+    public class DexterityVestItem : Item
+    {
+
+    }
+
+    public class AgedBrieItem : Item
+    {
+        public override void UpdateQuality()
+        {
+            Quality = SellIn <= SellInDateEnd ? Quality + 2 : Quality + 1;
+            if (Quality <= MaximumItemQuality) return;
+            Quality = MaximumItemQuality;
+        }
+    }
+
+    public class ElixirItem : Item
+    {
+
+    }
+
+    public class BackstagePassesItem : Item
+    {
+        public override void UpdateQuality()
+        {
+            if (SellIn <= SellInDateEnd)
+            {
+                Quality = MinimumItemQuality;
+                return;
+            }
+
+            if (SellIn <= 5)
+            {
+                Quality = Quality + 3;
+            }
+            else if (SellIn <= 10)
+            {
+                Quality = Quality + 2;
+            }
+            else
+            {
+                Quality = Quality + 1;
+            }
+
+            if (Quality <= MaximumItemQuality) return;
+            Quality = MaximumItemQuality;
+        }
+    }
+
+    public class SulfurasItem : Item
+    {
+        public override void UpdateSellInDate()
+        {
+        }
+
+        public override void UpdateQuality()
+        {
+        }
+    }
+
+    public class ConjuredItem : Item
+    {
+        public override void UpdateQuality()
+        {
+            Quality = SellIn <= SellInDateEnd ? Quality - 4 : Quality - 2;
+            if (Quality >= MinimumItemQuality) return;
+            Quality = MinimumItemQuality;
+        }
+    }
+
 }
